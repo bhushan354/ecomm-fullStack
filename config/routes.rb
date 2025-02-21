@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   authenticated :admin do
     root to: "admin#index", as: :admin_root
   end
-  
+
   root "home#index"
 
 
