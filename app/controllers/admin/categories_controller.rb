@@ -28,7 +28,7 @@ class Admin::CategoriesController < AdminController
 
     respond_to do |format|
       if @admin_category.save
-        format.html { redirect_to @admin_category, notice: "Category was successfully created." }
+        format.html { redirect_to admin_category_path(@admin_category), notice: "Category was successfully created." }
         format.json { render :show, status: :created, location: @admin_category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,8 +40,14 @@ class Admin::CategoriesController < AdminController
   # PATCH/PUT /admin/categories/1 or /admin/categories/1.json
   def update
     respond_to do |format|
+      # Why Does redirect_to [:admin, @admin_category] Work?
+      # [:admin, @admin_category] explicitly tells Rails that @admin_category is part of the admin namespace.
+
+      # Alternatively, explicitly specify the path helper:
+      # redirect_to admin_category_path(@admin_category), notice: "Category was successfully updated."
+
       if @admin_category.update(admin_category_params)
-        format.html { redirect_to @admin_category, notice: "Category was successfully updated." }
+        format.html { redirect_to [:admin, @admin_category], notice: "Category was successfully updated." }
         format.json { render :show, status: :ok, location: @admin_category }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -68,6 +74,6 @@ class Admin::CategoriesController < AdminController
 
     # Only allow a list of trusted parameters through.
     def admin_category_params
-      params.expect(admin_category: [ :name, :description ])
+      params.expect(category: [ :name, :description ])
     end
 end
